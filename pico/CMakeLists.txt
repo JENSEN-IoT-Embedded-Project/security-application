@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 3.19)
 set(PICO_BOARD pico_w)
 set(PICO_SDK_FETCH_FROM_GIT on)
