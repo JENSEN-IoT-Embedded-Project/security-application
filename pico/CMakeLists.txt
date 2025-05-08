@@ -1,11 +1,13 @@
-cmake_minimum_required(VERSION 3.16)
-set(PICO_BOARD pico_w)
-include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-project(motionsensor C CXX ASM)
+cmake_minimum_required(VERSION 3.19)
+set(PICO_BOARD pico_w)
+set(PICO_SDK_FETCH_FROM_GIT on)
+
+include(pico_sdk_import.cmake)
+project(security-application C CXX)
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 pico_sdk_init()
-
 add_subdirectory(src)
-
-
