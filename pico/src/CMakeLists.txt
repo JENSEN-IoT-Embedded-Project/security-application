@@ -7,7 +7,7 @@ target_link_libraries(hcsr04
 )
 
 #executable
-add_executable(security-application main.c) #wifi.c 
+add_executable(security-application main.c wifi.c) #wifi.c 
 target_include_directories(security-application PRIVATE ${CMAKE_SOURCE_DIR}/include)
 set_target_properties(security-application PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 

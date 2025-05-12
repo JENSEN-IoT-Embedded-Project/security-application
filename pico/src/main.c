@@ -1,6 +1,7 @@
 #include "hcsr04.h"
 #include "pico/stdlib.h"
 #include <stdio.h>
+#include "wifi.h"
 
 #define TRIGG 15 
 #define ECHO 14 
