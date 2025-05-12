@@ -12,7 +12,6 @@ bool alarmtriggered() {
 
     for (int i = 0; i < alarmcounter; i++) {
         sleep_ms(1000);
-
         // if (gpio_get(CANCEL_PIN)) {
         //     printf("alarm cancelled\n");
         //     return false;	
