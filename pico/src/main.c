@@ -24,13 +24,19 @@ int main()
     double distance = 0;
     //initiate callback function that will run when ECHO pin is either rising or falling.
     init_echo_callback(ECHO);
-
-
+	bool alarm_is_active = false;
+	
     while(1){
         //send trigger pulse and generate distance to object  to the second parameter in the function.
         send_trigger_pulse(TRIGG,&distance);
         printf("distance: %.2f\n",distance);
         sleep_ms(1000);
+        if (distance <= 5){
+        	alarm_is_active = true;
+        }
+        if (alarm_is_active){
+        	alarmtriggered();
+        }
     }
     return 0;
 }

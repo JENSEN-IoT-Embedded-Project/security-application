@@ -19,7 +19,8 @@ bool alarmtriggered() {
     }
 
     printf("alarm triggered!\n");
-    return true;
+    alarm_is_active = false;
+    return false;
 }
 
 void save_data(){
