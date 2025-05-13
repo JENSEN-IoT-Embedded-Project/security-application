@@ -15,6 +15,7 @@
 
 #define WIFI_SSID "write yours"
 #define WIFI_PASS "write yours"
+
 void connect_to_wifi();
 void init_ntp(); 
 int main() 
@@ -71,6 +72,7 @@ int main()
               date = 
               user_id = MQTT_DEVICE_NAME;
               */
+
             alarm_is_active = true;
         }
         if (alarm_is_active){
@@ -78,7 +80,7 @@ int main()
             sleep_ms(1000);
             if (mqtt_connected) {
                 const char *topic = "motion/sensor";
-                const char *msg = "motion_detected";
+                const char *msg = create_json(MQTT_DEVICE_NAME, distance);
                 err_t pub_result = mqtt_publish(client, topic, msg, strlen(msg), 0, 0, NULL, NULL);
 
                 if (pub_result == ERR_OK) {
