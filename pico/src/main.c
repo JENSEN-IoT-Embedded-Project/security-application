@@ -8,16 +8,16 @@
 #include "lwip/apps/mqtt.h"
 #include "mqtt_functions.h"
 #include "mqtt_config.h"
+#include "jsonify.h"
 
 #define TRIGG 15 
 #define ECHO 14
 
 
-#define WIFI_SSID "write yours"
-#define WIFI_PASS "write yours"
+#define WIFI_SSID ""
+#define WIFI_PASS ""
 
 void connect_to_wifi();
-void init_ntp(); 
 int main() 
 {   
     //init pins for ultrasonicsensor
@@ -31,11 +31,6 @@ int main()
     connect_to_wifi();
     double distance = 0;
     bool alarm_is_active = false;
-    char* user;
-
-    char* time;
-
-    init_ntp();
     //initiate callback function that will run when ECHO pin is either rising or falling.
     init_echo_callback(ECHO);
     uint buzzer = 11;
@@ -62,7 +57,7 @@ int main()
         }   
         send_trigger_pulse(TRIGG,&distance);
         if(iteration == 0) {
-            reference == distance;
+            reference = distance;
             iteration ++;
         }
         printf("distance: %.2f\n",distance);
@@ -76,10 +71,8 @@ int main()
             alarm_is_active = true;
         }
         if (alarm_is_active){
-        	alarmtriggered(&alarm_is_active, buzzer);
-            sleep_ms(1000);
             if (mqtt_connected) {
-                const char *topic = "motion/sensor";
+                const char *topic = "motion/detected";
                 const char *msg = create_json(MQTT_DEVICE_NAME, distance);
                 err_t pub_result = mqtt_publish(client, topic, msg, strlen(msg), 0, 0, NULL, NULL);
 
@@ -89,6 +82,9 @@ int main()
                     printf("MQTT publish failed: %d\n", pub_result);
                 }
             }
+        	alarmtriggered(&alarm_is_active, buzzer);
+            sleep_ms(1000);
+            
         }
     }
     return 0;
