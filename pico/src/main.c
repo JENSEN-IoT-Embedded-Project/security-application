@@ -6,7 +6,6 @@
 #include "buzzer_melodies.h"
 #include <lwip/ip_addr.h>
 #include "lwip/apps/mqtt.h"
-
 #include "mqtt_functions.h"
 #include "mqtt_config.h"
 
@@ -14,13 +13,14 @@
 #define ECHO 14
 
 
-#define WIFI_SSID "add yours"
-#define WIFI_PASS "add yours"
+#define WIFI_SSID "write yours"
+#define WIFI_PASS "write yours"
 void connect_to_wifi();
-
+void init_ntp(); 
 int main() 
 {   
     //init pins for ultrasonicsensor
+    //
     stdio_init_all();
     sleep_ms(1000);
     gpio_init(TRIGG);
@@ -30,6 +30,11 @@ int main()
     connect_to_wifi();
     double distance = 0;
     bool alarm_is_active = false;
+    char* user;
+
+    char* time;
+
+    init_ntp();
     //initiate callback function that will run when ECHO pin is either rising or falling.
     init_echo_callback(ECHO);
     uint buzzer = 11;
@@ -39,29 +44,34 @@ int main()
     if (!mqtt_connect(&client, _MQTT_BROKER_IP, MQTT_DEVICE_NAME, &pico)) {
         printf("MQTT connect failed\n");
     }
-
     // Wait until MQTT is connected (timeout after 10 seconds)
     int waited = 0;
     while (!mqtt_connected && waited < 10000) {
         cyw43_arch_poll();
         sleep_ms(10);
-        waited += 10;
+    waited += 10;
     }
-
-
-    	
+    int iteration = 0;
+    double reference = 0;
     while(1){
         //send trigger pulse and generate distance to object  to the second parameter in the function.
         for(int i = 0; i < 3 ; i++){ 
             send_trigger_pulse(TRIGG,&distance);
             sleep_ms(100);
-        }
+        }   
         send_trigger_pulse(TRIGG,&distance);
+        if(iteration == 0) {
+            reference == distance;
+            iteration ++;
+        }
         printf("distance: %.2f\n",distance);
         sleep_ms(100);
-
-        if (distance <= 5){
-        	alarm_is_active = true;
+        if (distance <= (reference - 5)){
+            /*time 
+              date = 
+              user_id = MQTT_DEVICE_NAME;
+              */
+            alarm_is_active = true;
         }
         if (alarm_is_active){
         	alarmtriggered(&alarm_is_active, buzzer);
@@ -77,7 +87,6 @@ int main()
                     printf("MQTT publish failed: %d\n", pub_result);
                 }
             }
-
         }
     }
     return 0;
@@ -94,7 +103,12 @@ void connect_to_wifi(){
 		printf("Failed to connect ..-");
 		sleep_ms(3000);
 	}
-	
 	printf("Connected to wifi: %s\n", WIFI_SSID);
-	
 }
+
+
+
+
+
+  
+        
