@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/script.js" defer></script>
+  <title>Home Page</title>
+</head>
+<body>
+	<div class="header-line"></div>
+	<div class="main_page-container">
+		<div class="left-section">
+			
+			<div class="box box1">
+			<h3>My devices</h3>
+			</div>		
+			
+			<div class="box box2">
+			<h3>Users</h3>
+			</div>
+
+			<div class="box box3">
+                        <h3>Neighboorhood Watch</h3>
+                        </div>
+
+			<div class="box box4">
+                        <h3>Notifications</h3>
+                        </div>
+			
+			<div class="box box5">
+                        <h3>Alarm System</h3>
+                        </div>
+
+			<div class="box box6">
+                        <h3>Cameras</h3>
+                        </div>
+
+			<div class="box box7">
+                        <h3>Smart Home</h3>
+                        </div>
+
+			<div class="box box8">
+                        <h3>Voice Control</h3>
+                        </div>
+			
+			<div class="box box9">
+                        <h3>Settings</h3>
+                        </div>
+			
+			<div class="box box10">
+                        <h3>Support</h3>
+                        </div>
+		</div>
+
+		<div class="right-section">
+			<h1>Logged in as: <%= @username %></h1>
+			<h2>System Overview</h2>
+			<h3>System Status:</h3>
+
+			<table>
+				<tr>
+					<th>Device</th>
+					<th>Status</th>
+					<th>Last data</th>
+					<th>Update available</th>
+				</tr>
+				<tr>
+					<td>
+						<div id="device-id-container"></div>
+					</td>
+					<td>
+						<div id="device-status-container"></div>
+					</td>
+					<td>
+						<div id="motion-sensor-data-container"></div>
+					</td>
+					<td>FALSE</td>
+				</tr>
+				<tr>
+                                        <td>Camera</td>
+                                        <td>OFFLINE</td>
+                                        <td>N/A</td>
+					<td>FALSE</td>
+                                </tr>
+			</table>
+		</div>
+
+	</div>
+	<div class="footer"></div>
+	<script>
+		async function updateMQTTData() {
+			const res = await fetch('/mqtt_data');  // Hämta MQTT-data från servern
+			const json = await res.json();
+			let deviceStatus;
+	
+			// Hämta senaste data för motion-sensor
+			const deviceID = json['sensors/simon-pico']?.['device-id'] || 'No device connected';
+			if(deviceID !== 'No device connected'){
+				deviceStatus = "ONLINE";
+			}else{
+				deviceStatus = "OFFLINE";
+			}
+			const motionSensorData = json['sensors/simon-pico']?.['distance'] || 'No data available';
+			
+			
+
+			// Uppdatera div med ID "motion-sensor-data-container"
+			document.getElementById('motion-sensor-data-container').innerText = motionSensorData;
+			document.getElementById('device-id-container').innerText = deviceID;
+			document.getElementById('device-status-container').innerText = deviceStatus;
+		}
+		
+		setInterval(updateMQTTData, 3000);
+		updateMQTTData();
+	</script>
+
+</body>
+</html>
