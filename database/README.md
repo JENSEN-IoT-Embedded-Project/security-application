@@ -37,8 +37,14 @@ docker compose up influxdb2
     Press [login](http://localhost:8086/) to login to database and log in with your credentials added in .env files above.
 
 ## install influxdb2 CLI
+proceed to this [guide](https://docs.influxdata.com/influxdb/v2/tools/influx-cli/) to install the influx-cli on your prefered operating system.
 
-    
+### Configurate influx CLI to your database running on docker
+
+1. proceed to generate a token [api-token](http://localhost:8086/orgs/d4cf51eab34efaab/load-data/tokens)
+2. proceed to get the name of your [organizaion](http://localhost:8086/orgs/d4cf51eab34efaab/about)
+
+3. scroll down to **Set up influx CLI** and change the data needed under **Provide required authentication credentials** and paste it in your terminal
 
 
     
