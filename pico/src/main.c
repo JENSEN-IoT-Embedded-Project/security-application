@@ -50,29 +50,31 @@ int main()
     int iteration = 0;
     double reference = 0;
     while(1){
-        //send trigger pulse and generate distance to object  to the second parameter in the function.
-        for(int i = 0; i < 3 ; i++){ 
+        if(iteration == 0) {
+            for(int i = 0; i < 3 ; i++){ 
             send_trigger_pulse(TRIGG,&distance);
             sleep_ms(100);
-        }   
-        send_trigger_pulse(TRIGG,&distance);
-        if(iteration == 0) {
+            }   
             reference = distance;
             iteration ++;
         }
+        //send trigger pulse and generate distance to object  to the second parameter in the function.
+               send_trigger_pulse(TRIGG,&distance);
+        
         printf("distance: %.2f\n",distance);
         sleep_ms(100);
-        if (distance <= (reference - 5)){
+        if ((distance <= (reference - 5)) || (distance >= (reference + 5)) ){
             /*time 
               date = 
               user_id = MQTT_DEVICE_NAME;
               */
 
             alarm_is_active = true;
+            iteration = 0;
         }
         if (alarm_is_active){
             if (mqtt_connected) {
-                const char *topic = "motion/detected";
+                const char *topic = "sensors/ludde";
                 const char *msg = create_json(MQTT_DEVICE_NAME, distance);
                 err_t pub_result = mqtt_publish(client, topic, msg, strlen(msg), 0, 0, NULL, NULL);
 
