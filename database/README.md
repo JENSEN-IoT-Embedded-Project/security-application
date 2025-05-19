@@ -54,6 +54,31 @@ proceed to this [guide](https://docs.influxdata.com/influxdb/v2/tools/influx-cli
   --active
 ```
 
+# Create your first bucket
+a bucket is a as it sounds a bucket where you can write or read data to and from.
+
+easly described as a isolated enviroment where you store your collected data.
+1. you can follow guide [here](https://docs.influxdata.com/influxdb/v2/admin/buckets/create-bucket/?t=influx+CLI)
+
+or you can just paste this and change the name org and retention syntax.
+
+```bash
+influx bucket create \
+  --name <bucket-name> \
+  --org <org-name> \
+  --retention <retention-period-duration>
+```
+2. now you should be able to see the bucket created [here](http://localhost:8086/orgs/d4cf51eab34efaab/load-data/buckets). the bucket is now ready for you to read or write data from or to it. 
+
+# setup mqtt api to write data to bucket from mqtt broker
+
+
+
+
+
+
+
+
 
 
     
