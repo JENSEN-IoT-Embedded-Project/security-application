@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require 'mqtt'
 require 'thread'
+require 'time'
 
 enable :sessions
 
@@ -28,7 +29,7 @@ end
 
 Thread.new do
 	MQTT::Client.connect('94.255.229.51', ack_timeout: 30) do |client|
-		client.subscribe('sensors/simon-pico') #### topic here
+		client.subscribe('sensors/+') #### topic here
 
 		client.get do |topic, message|
 			message = message.force_encoding('UTF-8')
@@ -38,8 +39,12 @@ Thread.new do
 			begin
 				require 'json'
 				data = JSON.parse(message)
+				timestamp = Time.now.getlocal('+02:00').iso8601
 				$mqtt_mutex.synchronize do
-  					$latest_mqtt_data[topic] = data
+  					$latest_mqtt_data[topic] = {
+						**data,
+						"timestamp" => timestamp
+					}
 end
 			puts "Stored data for #{topic}: #{$latest_mqtt_data[topic]}"
 			rescue JSON::ParserError => e

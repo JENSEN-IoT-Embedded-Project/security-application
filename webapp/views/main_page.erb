@@ -56,14 +56,13 @@
 		<div class="right-section">
 			<h1>Logged in as: <%= @username %></h1>
 			<h2>System Overview</h2>
-			<h3>System Status:</h3>
 
 			<table>
 				<tr>
 					<th>Device</th>
 					<th>Status</th>
 					<th>Last data</th>
-					<th>Update available</th>
+					<th>Last time</th>
 				</tr>
 				<tr>
 					<td>
@@ -75,13 +74,23 @@
 					<td>
 						<div id="motion-sensor-data-container"></div>
 					</td>
-					<td>FALSE</td>
+					<td>
+						<div id="time-stamp-container"></div>
+					</td>
 				</tr>
 				<tr>
-                                        <td>Camera</td>
-                                        <td>OFFLINE</td>
-                                        <td>N/A</td>
-					<td>FALSE</td>
+                                        <td>
+						<div id="device-id-container1"></div>
+					</td>
+                                        <td>
+						<div id="device-status-container1"></div>
+					</td>
+                                        <td>
+						<div id="motion-sensor-data-container1"></div>
+					</td>
+					<td>
+						<div id="time-stamp-container1"></div>
+					</td>
                                 </tr>
 			</table>
 		</div>
@@ -95,20 +104,34 @@
 			let deviceStatus;
 	
 			// Hämta senaste data för motion-sensor
-			const deviceID = json['sensors/simon-pico']?.['device-id'] || 'No device connected';
+			const deviceID = json['sensors/simon']?.['device-id'] || 'No device connected';
 			if(deviceID !== 'No device connected'){
 				deviceStatus = "ONLINE";
 			}else{
 				deviceStatus = "OFFLINE";
 			}
-			const motionSensorData = json['sensors/simon-pico']?.['distance'] || 'No data available';
+			const motionSensorData = json['sensors/simon']?.['distance'] || 'No data available';
+			const timeStamp = json['sensors/simon']?.['timestamp'] || 'No timestamp';
 			
-			
+			const deviceID1 = json['sensors/ludde']?.['device-id'] || 'No device connected';
+			if(deviceID1 !== 'No device connected'){
+				deviceStatus1 = "ONLINE";
+			}else{
+				deviceStatus1 = "OFFLINE";
+			}
+			const motionSensorData1 = json['sensors/ludde']?.['distance'] || 'No data available';
+			const timeStamp1 = json['sensors/ludde']?.['timestamp'] || 'No timestamp';
 
 			// Uppdatera div med ID "motion-sensor-data-container"
 			document.getElementById('motion-sensor-data-container').innerText = motionSensorData;
 			document.getElementById('device-id-container').innerText = deviceID;
 			document.getElementById('device-status-container').innerText = deviceStatus;
+			document.getElementById('time-stamp-container').innerText = timeStamp;	
+
+			document.getElementById('device-id-container1').innerText = deviceID1;
+			document.getElementById('motion-sensor-data-container1').innerText = motionSensorData1;
+			document.getElementById('device-status-container1').innerText = deviceStatus1;
+			document.getElementById('time-stamp-container1').innerText = timeStamp1;
 		}
 		
 		setInterval(updateMQTTData, 3000);
