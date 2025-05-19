@@ -45,13 +45,14 @@ proceed to this [guide](https://docs.influxdata.com/influxdb/v2/tools/influx-cli
 
 2. proceed to get the name of your [organizaion](http://localhost:8086/orgs/d4cf51eab34efaab/about)
 
-3. ```bash
+3. change required information and run this command.
+```bash
       influx config create --config-name change-to-your-name \
   --host-url http://localhost:8086 \
   --org change-to-your-org-name \
   --token change-to-your-token \
   --active
-  ```
+```
 
 
 
