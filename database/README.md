@@ -70,7 +70,10 @@ influx bucket create \
 ```
 2. now you should be able to see the bucket created [here](http://localhost:8086/orgs/d4cf51eab34efaab/load-data/buckets). the bucket is now ready for you to read or write data from or to it. 
 
-# setup mqtt api to write data to bucket from mqtt broker
+# Python script for MQTT SUB & Influxdb client
+
+
+ 
 
 
 
