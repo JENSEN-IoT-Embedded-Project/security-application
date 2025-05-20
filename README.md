@@ -15,7 +15,7 @@ flowchart TD
             
          
  
- pico --> |"sensor data"| fog
+ pico --> |"Publish sensor data to broker"| fog
  fog -->|"sensor data"| influxdb
  influxdb -.-> |"MQTT Sub"| fog
  
