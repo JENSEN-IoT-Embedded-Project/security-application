@@ -71,6 +71,44 @@ influx bucket create \
 2. now you should be able to see the bucket created [here](http://localhost:8086/orgs/d4cf51eab34efaab/load-data/buckets). the bucket is now ready for you to read or write data from or to it. 
 
 # Python script for MQTT SUB & Influxdb client
+```bash
+pip3 install influxdb-client
+```
+```bash
+pip3 install "paho-mqtt<2.0.0"
+```
+## in mqtt_sub.py
+go into mqtt client and change 
+**change**
+```python3
+bucket = "your-bucket"
+org = "your org"
+token = "your token" # or set env variable  os.getenv("INFLUX_TOKEN")
+url="http://localhost:8086/"
+```
+```python3
+mqtt_client.connect("write your borker ip",1883)
+mqtt_client.subscribe("write your topic",qos=1)
+```
+## Test everything
+**Start your docker container if not already started**
+Go into your bucket [bucket](http://localhost:8086/orgs/d4cf51eab34efaab/load-data/buckets)
+
+start your mqtt-broker
+
+run:
+```bash
+   python3 mqtt_sub.py
+```
+Publish data to topic and it should now appear in your bucket make sure to send the data as following for it to be correct serialized for this example
+```python3
+ p = (influxdb_client.Point("distance_measurement")
+         .tag("device-id", data["device-id"])
+         .field("distance", data["distance"]))
+```
+
+
+
 
 
  
