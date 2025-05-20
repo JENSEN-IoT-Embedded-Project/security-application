@@ -1,7 +1,13 @@
 # security-application
 ```mermaid
-flowchart LR
-    A[Pico W\n(Motionsensor)] -->|MQTT publish| B[MQTT Broker\n(Fog Raspberry Pi Zero)]
-    B -->|MQTT subscribe| C[InfluxDB\n(Time-series DB)]
-    C -->|HTTP GET request| D[Webbapp]
+flowchart TD
+    pico["Pico W\n(Motion Sensor)"]
+    fog["Raspberry Pi Zero\n(MQTT Broker)"]
+    influxdb["Docker Container\n(InfluxDB Time Series Database)"]
+    webapp["Web Application\n(HTTP Server + MQTT Subscriber)"]
+    
+    pico -->|"Sensor Data"| fog
+    fog -->|"MQTT Messages"| influxdb
+    influxdb -->|"Time Series Data"| webapp
+    fog -.->|"Direct MQTT Subscribe"| webapp
 ```
