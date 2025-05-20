@@ -1,7 +1,7 @@
 #pragma once
 
 
-#define _MQTT_BROKER_IP "94.255.229.51"
+#define _MQTT_BROKER_IP ""
 
 #define _MQTT_PORT 1883
 
