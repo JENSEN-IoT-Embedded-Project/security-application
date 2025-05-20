@@ -1,9 +1,3 @@
-## Dependancies
-
-* Raspberry Pi Pico SDK
-* CMake
-* Make
-
 ## Installation
 
 **Clone:**
