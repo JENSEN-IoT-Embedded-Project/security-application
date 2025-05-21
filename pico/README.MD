@@ -20,3 +20,8 @@ vim include/mqtt_config.h and change following:
 #define _MQTT_PORT 1883 // standard port
 
 ```
+**Build executable
+```bash
+cmake -B build
+make -C build
+```
